@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     id("androidx.navigation.safeargs")
     id("com.google.devtools.ksp")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -46,6 +47,7 @@ dependencies {
 
     //room
     implementation(libs.androidx.room.ktx)
+    implementation(libs.firebase.auth)
     ksp(libs.androidx.room.compiler)
 
     implementation(libs.androidx.core.ktx)
@@ -61,6 +63,9 @@ dependencies {
     implementation (libs.lottie)
     implementation (libs.dotsindicator)
 
-
+    //Firebase
+    implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.android.gms:play-services-auth:21.3.0")
 
 }
