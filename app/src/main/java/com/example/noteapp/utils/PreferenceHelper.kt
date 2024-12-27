@@ -2,7 +2,6 @@ package com.example.noteapp.utils
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.graphics.Color
 
 class PreferenceHelper {
 
@@ -12,7 +11,11 @@ class PreferenceHelper {
         sharedPref = context.getSharedPreferences("sharedPref", Context.MODE_PRIVATE)
     }
 
-    var isFirstTime: Boolean
+    var isFirstTimeOnBoard: Boolean
+        get() = sharedPref.getBoolean("showed", false)
+        set(value) = sharedPref.edit().putBoolean("showed", value).apply()
+
+    var isSignIn: Boolean
         get() = sharedPref.getBoolean("showed", false)
         set(value) = sharedPref.edit().putBoolean("showed", value).apply()
 }
