@@ -11,19 +11,18 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.example.noteapp.R
 import com.example.noteapp.databinding.ActivityMainBinding
-import com.example.noteapp.ui.fragments.onboard.OnBoardFragment.Companion.sharedPref
+import com.example.noteapp.utils.PreferenceHelper
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
+    companion object {
+        val sharedPref = PreferenceHelper()
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragment_container_view) as NavHostFragment
-        navController = navHostFragment.navController
-        sharedPref.unit(this)
 
         binding.splashScreen.visibility = View.VISIBLE
         binding.fragmentContainerView.visibility = View.GONE
@@ -31,15 +30,7 @@ class MainActivity : AppCompatActivity() {
         Handler().postDelayed({
             binding.splashScreen.visibility = View.GONE
             binding.fragmentContainerView.visibility = View.VISIBLE
-            val startDestination =
-                if (sharedPref.isFirstTimeOnBoard) {
-                    if (sharedPref.isSignIn) R.id.noteFragment else R.id.signInFragment
-                } else R.id.onBoardFragment
-
-            val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
-            navGraph.setStartDestination(startDestination)
-            navController.graph = navGraph
-        }, 2800)
+        }, 2500)
 
     }
 }

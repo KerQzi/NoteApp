@@ -9,11 +9,13 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.noteapp.App
 import com.example.noteapp.R
 import com.example.noteapp.data.models.NoteModel
 import com.example.noteapp.databinding.FragmentNoteBinding
+import com.example.noteapp.ui.activities.MainActivity.Companion.sharedPref
 import com.example.noteapp.ui.intefaces.OnClickItem
 import com.example.noteapp.ui.adapters.NoteAdapter
 
@@ -33,6 +35,7 @@ class NoteFragment : Fragment(), OnClickItem {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        sharedPref.unit(requireContext())
         initalize()
         setUpListeners()
         getData()
@@ -40,7 +43,11 @@ class NoteFragment : Fragment(), OnClickItem {
 
     private fun initalize() {
         binding.rvNotes.apply {
-            layoutManager = LinearLayoutManager(requireContext())
+            if (!sharedPref.isGridLayout) {
+                layoutManager = LinearLayoutManager(requireContext())
+            }else{
+                layoutManager = GridLayoutManager(requireContext(), 2)
+            }
             adapter = noteAdapter
         }
     }
@@ -48,6 +55,17 @@ class NoteFragment : Fragment(), OnClickItem {
     private fun setUpListeners() = with(binding) {
         btnAdd.setOnClickListener {
             findNavController().navigate(R.id.action_noteFragment_to_noteDetailFragment)
+        }
+        btnRvStyle.setOnClickListener {
+            if (rvNotes.layoutManager !is GridLayoutManager) {
+                rvNotes.layoutManager = GridLayoutManager(requireContext(), 2)
+                btnRvStyle.setImageResource(R.drawable.menu_1)
+                sharedPref.isGridLayout = true
+            } else {
+                rvNotes.layoutManager = LinearLayoutManager(requireContext())
+                sharedPref.isGridLayout = false
+                btnRvStyle.setImageResource(R.drawable.shape)
+            }
         }
     }
 

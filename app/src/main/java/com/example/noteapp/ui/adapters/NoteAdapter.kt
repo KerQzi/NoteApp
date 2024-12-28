@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.noteapp.R
 import com.example.noteapp.data.models.NoteModel
-import com.example.noteapp.databinding.NoteItemBinding
+import com.example.noteapp.databinding.NoteItemLinearBinding
 import com.example.noteapp.ui.fragments.notes.NoteDetailFragment
 import com.example.noteapp.ui.fragments.notes.NoteFragment
 import com.example.noteapp.ui.intefaces.OnClickItem
@@ -23,7 +23,7 @@ class NoteAdapter(
     private val onLongCLick: OnClickItem,
     private val onCLick: OnClickItem,
 ): ListAdapter<NoteModel, NoteAdapter.ViewHolder>(DiffCallback()) {
-    class ViewHolder(private val binding: NoteItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ViewHolder(private val binding: NoteItemLinearBinding) : RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("ResourceAsColor")
         fun bind(item: NoteModel){
             binding.tvTitle.text = item.title
@@ -51,7 +51,7 @@ class NoteAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
-            NoteItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            NoteItemLinearBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
     }
 

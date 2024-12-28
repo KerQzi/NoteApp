@@ -12,7 +12,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.findNavController
 import com.example.noteapp.R
 import com.example.noteapp.databinding.FragmentSignInBinding
-import com.example.noteapp.ui.fragments.onboard.OnBoardFragment.Companion.sharedPref
+import com.example.noteapp.ui.activities.MainActivity.Companion.sharedPref
 import com.example.noteapp.utils.PreferenceHelper
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -59,7 +59,15 @@ class SignInFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        sharedPref.unit(requireContext())
+        checkSP()
         setupListeners()
+    }
+
+    private fun checkSP() {
+        if (!sharedPref.isSignIn){
+            findNavController().navigate(R.id.action_signInFragment_to_noteFragment)
+        }
     }
 
     private fun setupListeners() {

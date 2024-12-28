@@ -18,4 +18,9 @@ class PreferenceHelper {
     var isSignIn: Boolean
         get() = sharedPref.getBoolean("showed", false)
         set(value) = sharedPref.edit().putBoolean("showed", value).apply()
+
+    var isGridLayout: Boolean
+        get() = sharedPref.getBoolean("showed", false)
+        set(value) = sharedPref.edit().putBoolean("showed", value).apply()
+
 }

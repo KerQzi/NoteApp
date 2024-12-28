@@ -9,17 +9,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.example.noteapp.R
 import com.example.noteapp.databinding.FragmentOnBoardBinding
+import com.example.noteapp.ui.activities.MainActivity.Companion.sharedPref
 import com.example.noteapp.ui.adapters.OnBoardViewPagerAdapter
 import com.example.noteapp.utils.PreferenceHelper
 
 class OnBoardFragment : Fragment() {
 
     private lateinit var binding: FragmentOnBoardBinding
-
-    companion object {
-        val sharedPref = PreferenceHelper()
-    }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,8 +27,16 @@ class OnBoardFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        sharedPref.unit(requireContext())
+        checkSP()
         initialize()
         setUpListener()
+    }
+
+    private fun checkSP() {
+        if (!sharedPref.isFirstTimeOnBoard){
+            findNavController().navigate(R.id.action_onBoardFragment_to_signInFragment)
+        }
     }
 
     private fun initialize() {
