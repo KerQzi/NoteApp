@@ -1,6 +1,7 @@
 package com.example.noteapp.ui.activities
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -24,13 +25,21 @@ class MainActivity : AppCompatActivity() {
         navController = navHostFragment.navController
         sharedPref.unit(this)
 
-        val startDestination =
-            if (sharedPref.isFirstTimeOnBoard) {
-                if (sharedPref.isSignIn) R.id.noteFragment else R.id.signInFragment
-            } else R.id.onBoardFragment
+        binding.splashScreen.visibility = View.VISIBLE
+        binding.fragmentContainerView.visibility = View.GONE
 
-        val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
-        navGraph.setStartDestination(startDestination)
-        navController.graph = navGraph
+        Handler().postDelayed({
+            binding.splashScreen.visibility = View.GONE
+            binding.fragmentContainerView.visibility = View.VISIBLE
+            val startDestination =
+                if (sharedPref.isFirstTimeOnBoard) {
+                    if (sharedPref.isSignIn) R.id.noteFragment else R.id.signInFragment
+                } else R.id.onBoardFragment
+
+            val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
+            navGraph.setStartDestination(startDestination)
+            navController.graph = navGraph
+        }, 2800)
+
     }
 }
