@@ -12,7 +12,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.fragment.findNavController
 import com.example.noteapp.R
 import com.example.noteapp.databinding.FragmentSignInBinding
-import com.example.noteapp.ui.activities.MainActivity.Companion.sharedPref
 import com.example.noteapp.utils.PreferenceHelper
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -42,6 +41,7 @@ class SignInFragment : Fragment() {
                 }
             }
         }
+    private val sharedPref = PreferenceHelper()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,8 +65,9 @@ class SignInFragment : Fragment() {
     }
 
     private fun checkSP() {
-        if (!sharedPref.isSignIn){
+        if (!sharedPref.isFirstSignIn){
             findNavController().navigate(R.id.action_signInFragment_to_noteFragment)
+            onDestroyView()
         }
     }
 
@@ -83,7 +84,7 @@ class SignInFragment : Fragment() {
                 if (task.isSuccessful) {
                     val user = auth.currentUser
                     sharedPref.unit(requireContext())
-                    sharedPref.isSignIn = true
+                    sharedPref.isFirstSignIn = false
                     updateUi(user)
                 } else {
                     updateUi(null)

@@ -12,15 +12,15 @@ class PreferenceHelper {
     }
 
     var isFirstTimeOnBoard: Boolean
-        get() = sharedPref.getBoolean("showed", false)
-        set(value) = sharedPref.edit().putBoolean("showed", value).apply()
+        get() = sharedPref.getBoolean("isFirstTimeOnBoard", true)
+        set(value) = sharedPref.edit().putBoolean("isFirstTimeOnBoard", value).apply()
 
-    var isSignIn: Boolean
-        get() = sharedPref.getBoolean("showed", false)
-        set(value) = sharedPref.edit().putBoolean("showed", value).apply()
+    var isFirstSignIn: Boolean
+        get() = sharedPref.getBoolean("isSignIn", true)
+        set(value) = sharedPref.edit().putBoolean("isSignIn", value).apply()
 
     var isGridLayout: Boolean
-        get() = sharedPref.getBoolean("showed", false)
-        set(value) = sharedPref.edit().putBoolean("showed", value).apply()
+        get() = sharedPref.getBoolean("isGridLayout", false)
+        set(value) = sharedPref.edit().putBoolean("isGridLayout", value).apply()
 
 }

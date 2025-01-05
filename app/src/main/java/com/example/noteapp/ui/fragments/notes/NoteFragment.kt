@@ -1,6 +1,5 @@
 package com.example.noteapp.ui.fragments.notes
 
-import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -15,14 +14,15 @@ import com.example.noteapp.App
 import com.example.noteapp.R
 import com.example.noteapp.data.models.NoteModel
 import com.example.noteapp.databinding.FragmentNoteBinding
-import com.example.noteapp.ui.activities.MainActivity.Companion.sharedPref
 import com.example.noteapp.ui.intefaces.OnClickItem
 import com.example.noteapp.ui.adapters.NoteAdapter
+import com.example.noteapp.utils.PreferenceHelper
 
 class NoteFragment : Fragment(), OnClickItem {
 
     private lateinit var binding: FragmentNoteBinding
     private val noteAdapter = NoteAdapter(this, this)
+    private val sharedPref = PreferenceHelper()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,20 +36,19 @@ class NoteFragment : Fragment(), OnClickItem {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         sharedPref.unit(requireContext())
-        initalize()
+        initialize()
         setUpListeners()
         getData()
     }
 
-    private fun initalize() {
-        binding.rvNotes.apply {
-            if (!sharedPref.isGridLayout) {
-                layoutManager = LinearLayoutManager(requireContext())
-            }else{
-                layoutManager = GridLayoutManager(requireContext(), 2)
-            }
-            adapter = noteAdapter
+    private fun initialize() {
+        binding.rvNotes.layoutManager = if (sharedPref.isGridLayout) {
+            GridLayoutManager(requireContext(), 2)
+        } else {
+            LinearLayoutManager(requireContext())
         }
+
+        binding.rvNotes.adapter = noteAdapter
     }
 
     private fun setUpListeners() = with(binding) {
@@ -57,14 +56,16 @@ class NoteFragment : Fragment(), OnClickItem {
             findNavController().navigate(R.id.action_noteFragment_to_noteDetailFragment)
         }
         btnRvStyle.setOnClickListener {
-            if (rvNotes.layoutManager !is GridLayoutManager) {
-                rvNotes.layoutManager = GridLayoutManager(requireContext(), 2)
+            rvNotes.layoutManager = if (rvNotes.layoutManager !is GridLayoutManager) {
+                val gridLayoutManager = GridLayoutManager(requireContext(), 2)
                 btnRvStyle.setImageResource(R.drawable.menu_1)
                 sharedPref.isGridLayout = true
+                gridLayoutManager
             } else {
-                rvNotes.layoutManager = LinearLayoutManager(requireContext())
-                sharedPref.isGridLayout = false
+                val linearLayoutManager = LinearLayoutManager(requireContext())
                 btnRvStyle.setImageResource(R.drawable.shape)
+                sharedPref.isGridLayout = false
+                linearLayoutManager
             }
         }
     }
@@ -83,17 +84,16 @@ class NoteFragment : Fragment(), OnClickItem {
         val cancel = view.findViewById<TextView>(R.id.delete_cancel)
 
         builder.setView(view)
-        val alertDialog = builder
-        alertDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-        alertDialog.show()
+        builder.window?.setBackgroundDrawableResource(android.R.color.transparent)
+        builder.show()
 
         delete.setOnClickListener {
             App.appDatabase?.noteDao()?.deleteNote(noteModel)
-            alertDialog.dismiss()
+            builder.dismiss()
         }
 
         cancel.setOnClickListener {
-            alertDialog.dismiss()
+            builder.dismiss()
         }
     }
 

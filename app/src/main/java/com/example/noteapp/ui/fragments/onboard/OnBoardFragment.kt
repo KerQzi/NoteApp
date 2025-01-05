@@ -9,13 +9,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.example.noteapp.R
 import com.example.noteapp.databinding.FragmentOnBoardBinding
-import com.example.noteapp.ui.activities.MainActivity.Companion.sharedPref
 import com.example.noteapp.ui.adapters.OnBoardViewPagerAdapter
 import com.example.noteapp.utils.PreferenceHelper
 
 class OnBoardFragment : Fragment() {
 
     private lateinit var binding: FragmentOnBoardBinding
+    private val sharedPref = PreferenceHelper()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -24,6 +24,7 @@ class OnBoardFragment : Fragment() {
         binding = FragmentOnBoardBinding.inflate(inflater, container, false)
         return binding.root
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -36,6 +37,7 @@ class OnBoardFragment : Fragment() {
     private fun checkSP() {
         if (!sharedPref.isFirstTimeOnBoard){
             findNavController().navigate(R.id.action_onBoardFragment_to_signInFragment)
+            onDestroyView()
         }
     }
 
@@ -63,8 +65,8 @@ class OnBoardFragment : Fragment() {
 
         binding.btnStart.setOnClickListener{
             findNavController().navigate(R.id.action_onBoardFragment_to_signInFragment)
-            if (!sharedPref.isFirstTimeOnBoard){
-                sharedPref.isFirstTimeOnBoard = true
+            if (sharedPref.isFirstTimeOnBoard){
+                sharedPref.isFirstTimeOnBoard = false
             }
         }
     }
