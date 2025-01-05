@@ -7,13 +7,20 @@
     android:layout_height="match_parent"
     tools:context=".ui.activities.MainActivity">
 
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/splash_screen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:lottie_rawRes="@raw/splash_screen"
+        app:lottie_speed="1.3"
+        app:lottie_autoPlay="true"/>
+
     <androidx.fragment.app.FragmentContainerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/fragment_container_view"
         android:name="androidx.navigation.fragment.NavHostFragment"
         app:navGraph="@navigation/nav_graph"
-        app:defaultNavHost="true"
         />
 
 

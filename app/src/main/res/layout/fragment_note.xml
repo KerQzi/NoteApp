@@ -74,7 +74,7 @@
             android:id="@+id/rv_notes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:listitem="@layout/note_item"/>
+            tools:listitem="@layout/note_item_linear"/>
 
     </LinearLayout>
 

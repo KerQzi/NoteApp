@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
+import com.example.noteapp.R
 import com.example.noteapp.databinding.FragmentOnBoardBinding
 import com.example.noteapp.ui.adapters.OnBoardViewPagerAdapter
 import com.example.noteapp.utils.PreferenceHelper
@@ -14,9 +15,7 @@ import com.example.noteapp.utils.PreferenceHelper
 class OnBoardFragment : Fragment() {
 
     private lateinit var binding: FragmentOnBoardBinding
-    companion object {
-        val sharedPref = PreferenceHelper()
-    }
+    private val sharedPref = PreferenceHelper()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,18 +25,18 @@ class OnBoardFragment : Fragment() {
         return binding.root
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        checkFirstTime()
+        sharedPref.unit(requireContext())
+        checkSP()
         initialize()
         setUpListener()
     }
 
-    private fun checkFirstTime() {
-        sharedPref.unit(requireContext())
-        if (sharedPref.isFirstTime) {
-            val action = OnBoardFragmentDirections.actionOnBoardFragmentToNoteFragment()
-            findNavController().navigate(action)
+    private fun checkSP() {
+        if (!sharedPref.isFirstTimeOnBoard){
+            findNavController().navigate(R.id.action_onBoardFragment_to_signInFragment)
             onDestroyView()
         }
     }
@@ -65,10 +64,9 @@ class OnBoardFragment : Fragment() {
         })
 
         binding.btnStart.setOnClickListener{
-            if (!sharedPref.isFirstTime){
-                val action = OnBoardFragmentDirections.actionOnBoardFragmentToNoteFragment()
-                findNavController().navigate(action)
-                sharedPref.isFirstTime = true
+            findNavController().navigate(R.id.action_onBoardFragment_to_signInFragment)
+            if (sharedPref.isFirstTimeOnBoard){
+                sharedPref.isFirstTimeOnBoard = false
             }
         }
     }
